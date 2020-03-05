@@ -2,9 +2,15 @@
 
 Тестовый REST API для получения информации по перелетам на основании ответов от gateway (моки в виде xml ответов).
 
+Запуск
 ```
 go get github.com/soypita/flights-searcher-api
 go run main.go
+```
+
+Запуск тестов
+```
+go test 
 ```
 
 **Описание API**
