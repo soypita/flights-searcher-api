@@ -27,6 +27,9 @@ func (c *FlightsController) GetAllFlightsResponse(w http.ResponseWriter, r *http
 			log.Printf("Failed to parse query param, %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
+		if start < 0 {
+			start = 0
+		}
 	}
 
 	if limitValue != "" {
@@ -35,7 +38,6 @@ func (c *FlightsController) GetAllFlightsResponse(w http.ResponseWriter, r *http
 			log.Printf("Failed to parse query param, %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
-		finish = limit + start
 	}
 
 	gatewayResponse, err := gateways.GetAllFlightTickets()
@@ -46,9 +48,11 @@ func (c *FlightsController) GetAllFlightsResponse(w http.ResponseWriter, r *http
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	if limit == 0 || limit > gatewayResponseLen {
+	if limit <= 0 || limit > gatewayResponseLen {
 		limit = gatewayResponseLen
 	}
+
+	finish = limit + start
 
 	if finish == 0 || finish > gatewayResponseLen {
 		finish = gatewayResponseLen

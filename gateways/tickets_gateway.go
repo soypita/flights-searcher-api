@@ -15,7 +15,7 @@ const (
 	secondGatewayResponse = "resources/Response_2.xml"
 )
 
-func extractDataFromRawResponse(wg *sync.WaitGroup, gatewayResponse string, response *entities.FlightsResponse, err error) {
+func ExtractDataFromRawResponse(wg *sync.WaitGroup, gatewayResponse string, response *entities.FlightsResponse, err error) {
 	xmlFile, err := os.Open(gatewayResponse)
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
@@ -31,8 +31,8 @@ func prepareData() ([]entities.Response, error) {
 
 	var err1 error
 	var err2 error
-	go extractDataFromRawResponse(&wg, firstGatewayResponse, &firstResponse, err1)
-	go extractDataFromRawResponse(&wg, secondGatewayResponse, &secondResponse, err2)
+	go ExtractDataFromRawResponse(&wg, firstGatewayResponse, &firstResponse, err1)
+	go ExtractDataFromRawResponse(&wg, secondGatewayResponse, &secondResponse, err2)
 
 	wg.Wait()
 	if err1 != nil {
